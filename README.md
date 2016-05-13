@@ -1,2 +1,2 @@
 # fsm
-Java Finite State Machine library
+Java Finite State Machine Library
