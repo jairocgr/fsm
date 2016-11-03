@@ -31,7 +31,8 @@ public class FiniteStateMachineTest {
 
   private FiniteStateMachine<State> fsm;
 
-  @Before public void setUp() {
+  @Before
+  public void setUp() {
 
     eventQueue = new ConcurrentLinkedQueue<String>() {
       @Override
@@ -123,20 +124,21 @@ public class FiniteStateMachineTest {
 
     FiniteStateMachine.TransitionTable tt = new FiniteStateMachine.TransitionTable();
 
-    tt.transition(State.HALT,      StartRequest.class,           start)
-      .transition(State.HALT,      Exception.class,              handleError)
-      .transition(State.WORKING,   StopRequest.class,            halt)
-      .transition(State.WORKING,   BlockForNewReadings.class,    block)
-      .transition(State.WORKING,   Exception.class,              handleError)
-      .transition(State.WORKING,   NewReading.class,             handleInput)
-      .transition(State.BLOCKED,   GoBackToListening.class,      unblock)
-      .transition(State.BLOCKED,   StopRequest.class,            halt)
-      .transition(State.BLOCKED,   Exception.class,              handleError);
+    tt.transition(State.HALT, StartRequest.class, start)
+      .transition(State.HALT, Exception.class, handleError)
+      .transition(State.WORKING, StopRequest.class, halt)
+      .transition(State.WORKING, BlockForNewReadings.class, block)
+      .transition(State.WORKING, Exception.class, handleError)
+      .transition(State.WORKING, NewReading.class, handleInput)
+      .transition(State.BLOCKED, GoBackToListening.class, unblock)
+      .transition(State.BLOCKED, StopRequest.class, halt)
+      .transition(State.BLOCKED, Exception.class, handleError);
 
     fsm = new FiniteStateMachine<State>(INIT_STATE, tt);
   }
 
-  @Test public void test() {
+  @Test
+  public void test() {
 
     assertEquals(INIT_STATE, fsm.getCurrentState());
 
@@ -148,11 +150,9 @@ public class FiniteStateMachineTest {
     assertEquals(INIT_STATE, fsm.getCurrentState());
 
 
-
     fsm.reactTo(new StartRequest());
     assertThat(eventQueue.remove(), containsString("starting"));
     assertEquals(State.WORKING, fsm.getCurrentState());
-
 
 
     NewReading readings = new NewReading("readins 2");
@@ -161,11 +161,9 @@ public class FiniteStateMachineTest {
     assertEquals(State.WORKING, fsm.getCurrentState());
 
 
-
     fsm.reactTo(new BlockForNewReadings());
     assertThat(eventQueue.remove(), containsString("blocking"));
     assertEquals(State.BLOCKED, fsm.getCurrentState());
-
 
 
     fsm.reactTo(ignoredReading);
@@ -173,13 +171,13 @@ public class FiniteStateMachineTest {
     assertEquals(State.BLOCKED, fsm.getCurrentState());
 
 
-
     fsm.reactTo(new StopRequest());
     assertThat(eventQueue.remove(), containsString("halting"));
     assertEquals(State.HALT, fsm.getCurrentState());
   }
 
-  @Test public void testWithErrorOnTransition() {
+  @Test
+  public void testWithErrorOnTransition() {
 
     assertEquals(INIT_STATE, fsm.getCurrentState());
 
@@ -192,11 +190,9 @@ public class FiniteStateMachineTest {
     assertEquals(INIT_STATE, fsm.getCurrentState());
 
 
-
     fsm.reactTo(new StartRequest());
     assertThat(eventQueue.remove(), containsString("starting"));
     assertEquals(State.WORKING, fsm.getCurrentState());
-
 
 
     NewReading failedReading = new NewReading("should cause to fail");

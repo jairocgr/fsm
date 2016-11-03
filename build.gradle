@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
-group = 'br.embrapa'
-version = '0.1.0-SNAPSHOT'
+group = 'fsm'
+version = '0.0.1'
 
 repositories {
   jcenter()
