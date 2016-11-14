@@ -2,7 +2,7 @@ apply plugin: 'java'
 
 def GROUP_ID = 'fsm'
 def ARTIFACT_ID = 'fsm'
-def VERSION_NAME = '0.0.1'
+def VERSION_NAME = '0.0.2'
 
 group = GROUP_ID
 version = VERSION_NAME

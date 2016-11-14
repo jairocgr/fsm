@@ -122,9 +122,9 @@ public class FiniteStateMachineTest {
       }
     };
 
-    FiniteStateMachine.TransitionTable tt = new FiniteStateMachine.TransitionTable();
+    fsm = new FiniteStateMachine<State>(INIT_STATE);
 
-    tt.transition(State.HALT, StartRequest.class, start)
+    fsm.transition(State.HALT, StartRequest.class, start)
       .transition(State.HALT, Exception.class, handleError)
       .transition(State.WORKING, StopRequest.class, halt)
       .transition(State.WORKING, BlockForNewReadings.class, block)
@@ -133,8 +133,6 @@ public class FiniteStateMachineTest {
       .transition(State.BLOCKED, GoBackToListening.class, unblock)
       .transition(State.BLOCKED, StopRequest.class, halt)
       .transition(State.BLOCKED, Exception.class, handleError);
-
-    fsm = new FiniteStateMachine<State>(INIT_STATE, tt);
   }
 
   @Test

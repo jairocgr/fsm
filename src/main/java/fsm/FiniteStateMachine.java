@@ -95,9 +95,17 @@ public class FiniteStateMachine<S> {
     }
   }
 
-  private final TransitionTable<FiniteStateMachine<S>, S> tt;
+  protected final TransitionTable<FiniteStateMachine<S>, S> tt;
 
   private S currentState;
+
+  public FiniteStateMachine(S initState) {
+
+    if (initState == null) throw new IllegalArgumentException("initState can't be null");
+
+    this.currentState = initState;
+    this.tt = new TransitionTable<FiniteStateMachine<S>, S>();
+  }
 
   public <M extends FiniteStateMachine<S>> FiniteStateMachine(S initState, TransitionTable<M, S> transitionTable) {
 
@@ -106,6 +114,11 @@ public class FiniteStateMachine<S> {
 
     this.currentState = initState;
     this.tt = (TransitionTable<FiniteStateMachine<S>, S>) transitionTable;
+  }
+
+  public <E, M extends FiniteStateMachine<S>> FiniteStateMachine<S> transition(S state, Class<E> eventClass, Transition<M, S, E> transition) {
+    tt.transition(state, eventClass, (Transition<FiniteStateMachine<S>, S, E>) transition);
+    return this;
   }
 
   public void reactTo(Object event) {
